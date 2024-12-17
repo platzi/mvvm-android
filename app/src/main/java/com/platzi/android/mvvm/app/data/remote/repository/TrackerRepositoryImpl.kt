@@ -23,12 +23,17 @@ class TrackerRepositoryImpl(
                 searchDto.products
                     .filter {
                         val calculatedCalories =
-                            it.nutriments.carbohydrates100g * 4f +
-                                    it.nutriments.proteins100g * 4f +
-                                    it.nutriments.fat100g * 9f
+                            (it.nutriments.carbohydrates100g?.times(4f) ?: 0.0) +
+                                    (it.nutriments.proteins100g?.times(4f) ?: 0.0) +
+                                    (it.nutriments.fat100g?.times(9f) ?: 0.0)
                         val lowerBound = calculatedCalories * 0.99f
                         val upperBound = calculatedCalories * 1.01f
-                        it.nutriments.energyKcal100g in (lowerBound..upperBound)
+                        if (it.nutriments.energyKcal100g == null) {
+                            0.0 in (lowerBound..upperBound)
+                        } else {
+                            it.nutriments.energyKcal100g in (lowerBound..upperBound)
+                        }
+
                     }
                     .mapNotNull { it.toTrackableFood() }
             )

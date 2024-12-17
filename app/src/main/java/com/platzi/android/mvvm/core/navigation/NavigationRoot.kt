@@ -108,7 +108,9 @@ fun NavigationRoot(
                     dayOfMonth = 1,
                     month = 1,
                     year = 2022,
-                    onNavigateUp = {}
+                    onNavigateUp = {
+                        navHostController.navigateUp()
+                    }
                 )
             }
         }
