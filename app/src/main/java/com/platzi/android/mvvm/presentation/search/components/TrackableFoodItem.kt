@@ -37,6 +37,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -161,15 +162,17 @@ fun TrackableFoodItem(
             ) {
                 Row {
                     BasicTextField(
-                        value = "",
+                        value = trackableFoodUiState.amount,
                         onValueChange = onAmountChange,
                         keyboardOptions = KeyboardOptions(
                             imeAction = if (trackableFoodUiState.amount.isNotBlank()) {
                                 ImeAction.Done
-                            } else ImeAction.Default
+                            } else ImeAction.Default,
+                            keyboardType = KeyboardType.Number
                         ),
                         keyboardActions = KeyboardActions(
                             onDone = {
+                                onTrack()
                                 defaultKeyboardAction(ImeAction.Done)
                             }
                         ),

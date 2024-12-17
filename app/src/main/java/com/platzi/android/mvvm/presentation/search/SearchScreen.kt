@@ -23,10 +23,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.platzi.android.mvvm.app.R
+import com.platzi.android.mvvm.app.domain.tracker.model.MealType
 import com.platzi.android.mvvm.app.ui.theme.LocalSpacing
 import com.platzi.android.mvvm.core.domain.util.UiEvent
 import com.platzi.android.mvvm.presentation.search.components.SearchTextField
 import com.platzi.android.mvvm.presentation.search.components.TrackableFoodItem
+import java.time.LocalDate
 
 @Composable
 fun SearchScreen(
@@ -93,9 +95,21 @@ fun SearchScreen(
                         searchViewModel.onEvent(SearchEvent.OnToggleTrackableFood(food.food))
                     },
                     onAmountChange = {
+                        searchViewModel.onEvent(
+                            SearchEvent.OnAmountForFoodChange(
+                                food.food, it
+                            )
+                        )
                     },
                     onTrack = {
-
+                        keyboardController?.hide()
+                        searchViewModel.onEvent(
+                            SearchEvent.OnTrackFoodClick(
+                                food = food.food,
+                                mealType = MealType.fromString(mealName),
+                                date = LocalDate.of(year, month, dayOfMonth)
+                            )
+                        )
                     },
                     modifier = Modifier.fillMaxWidth()
                 )
