@@ -19,17 +19,18 @@ import com.platzi.android.mvvm.presentation.tracker_overview.components.AddButto
 import com.platzi.android.mvvm.presentation.tracker_overview.components.DaySelector
 import com.platzi.android.mvvm.presentation.tracker_overview.components.ExpandableMeal
 import com.platzi.android.mvvm.presentation.tracker_overview.components.NutrientsHeader
+import com.platzi.android.mvvm.presentation.tracker_overview.components.TrackedFoodItem
 
 @Composable
 fun TrackerOverviewScreen(
-    onNavigateToSearch: () -> Unit,
+    onNavigateToSearch: (String, Int, Int, Int) -> Unit,
     trackerOverviewViewModel: TrackerOverviewViewModel = hiltViewModel()
 ) {
     val spacing = LocalSpacing.current
     val context = LocalContext.current
     val state = trackerOverviewViewModel.state
 
-    LazyColumn (
+    LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .padding(bottom = spacing.spaceMedium)
@@ -67,6 +68,10 @@ fun TrackerOverviewScreen(
                             it.mealType == meal.mealType
                         }
                         foods.forEach { food ->
+                            TrackedFoodItem(
+                                trackedFood = food,
+                                onDeleteClick = {}
+                            )
                             Spacer(modifier = Modifier.height(spacing.spaceMedium))
                         }
                         AddButton(
@@ -75,7 +80,12 @@ fun TrackerOverviewScreen(
                                 meal.name.asString(context)
                             ),
                             onClick = {
-                                onNavigateToSearch()
+                                onNavigateToSearch(
+                                    meal.name.asString(context),
+                                    state.date.dayOfMonth,
+                                    state.date.monthValue,
+                                    state.date.year
+                                )
                             },
                             modifier = Modifier.fillMaxWidth()
                         )

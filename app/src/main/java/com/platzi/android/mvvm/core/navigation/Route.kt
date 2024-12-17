@@ -21,4 +21,9 @@ object NutrientGoalScreenRoute
 @Serializable
 object TrackerOverviewScreenRoute
 @Serializable
-object SearchScreenRoute
+data class SearchScreenRoute(
+    val mealName: String,
+    val dayOfMonth: Int,
+    val month: Int,
+    val year: Int
+)
