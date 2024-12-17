@@ -1,30 +1,67 @@
 package com.platzi.android.mvvm.presentation.tracker_overview
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
+import android.content.res.Configuration
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.platzi.android.mvvm.app.ui.theme.LocalSpacing
+import com.platzi.android.mvvm.app.ui.theme.PlatziCaloriesTheme
+import com.platzi.android.mvvm.presentation.tracker_overview.components.NutrientsHeader
 
 @Composable
 fun TrackerOverviewScreen(
     trackerOverviewViewModel: TrackerOverviewViewModel = hiltViewModel()
 ) {
-    Box(
-        modifier = Modifier.fillMaxSize()
+    val spacing = LocalSpacing.current
+    val context = LocalContext.current
+
+    LazyColumn (
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(bottom = spacing.spaceMedium)
     ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = "Tracker Overview Screen"
-            )
+        item {
+            NutrientsHeader()
+            Spacer(modifier = Modifier.height(spacing.spaceMedium))
         }
+    }
+}
+
+@Composable
+fun TrackOverviewScreenTest(){
+    val spacing = LocalSpacing.current
+    val context = LocalContext.current
+
+    LazyColumn (
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(bottom = spacing.spaceMedium)
+    ) {
+        item {
+            NutrientsHeader()
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun TrackOverviewScreenPreview() {
+    PlatziCaloriesTheme {
+        TrackOverviewScreenTest()
+    }
+}
+
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun TrackOverviewScreenPreviewDark() {
+    PlatziCaloriesTheme {
+        TrackOverviewScreenTest()
     }
 }
