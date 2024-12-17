@@ -90,10 +90,9 @@ fun SearchScreen(
                 TrackableFoodItem(
                     trackableFoodUiState = food,
                     onClick = {
-
+                        searchViewModel.onEvent(SearchEvent.OnToggleTrackableFood(food.food))
                     },
                     onAmountChange = {
-
                     },
                     onTrack = {
 

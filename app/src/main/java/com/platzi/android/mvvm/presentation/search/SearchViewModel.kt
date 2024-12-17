@@ -39,6 +39,16 @@ class SearchViewModel @Inject constructor(
                 executeSearch()
             }
 
+            is SearchEvent.OnToggleTrackableFood -> {
+                state = state.copy(
+                    trackableFood = state.trackableFood.map {
+                        if (it.food == event.food) {
+                            it.copy(isExpanded = !it.isExpanded)
+                        } else it
+                    }
+                )
+            }
+
             is SearchEvent.OnSearchFocusChange -> {
                 state = state.copy(
                     isHintVisible = !event.isFocused && state.query.isBlank()
