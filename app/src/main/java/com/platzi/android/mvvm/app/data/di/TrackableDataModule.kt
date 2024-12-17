@@ -1,5 +1,8 @@
 package com.platzi.android.mvvm.app.data.di
 
+import android.app.Application
+import androidx.room.Room
+import com.platzi.android.mvvm.app.data.local.database.TrackerDatabase
 import com.platzi.android.mvvm.app.data.remote.api.OpenFoodApi
 import com.platzi.android.mvvm.app.data.remote.repository.TrackerRepositoryImpl
 import com.platzi.android.mvvm.app.domain.tracker.repository.TrackerRepository
@@ -32,7 +35,7 @@ object TrackerDataModule {
             .build()
     }
 
-    private fun getMoshi() : Moshi{
+    private fun getMoshi(): Moshi {
         return Moshi.Builder()
             .add(KotlinJsonAdapterFactory())
             .build()
@@ -51,11 +54,23 @@ object TrackerDataModule {
 
     @Provides
     @Singleton
+    fun provideTrackerDatabase(app: Application): TrackerDatabase {
+        return Room.databaseBuilder(
+            app,
+            TrackerDatabase::class.java,
+            "tracker_db"
+        ).build()
+    }
+
+    @Provides
+    @Singleton
     fun provideTrackerRepository(
         api: OpenFoodApi,
+        db: TrackerDatabase
     ): TrackerRepository {
         return TrackerRepositoryImpl(
-            api = api
+            api = api,
+            dao = db.dao
         )
     }
 }

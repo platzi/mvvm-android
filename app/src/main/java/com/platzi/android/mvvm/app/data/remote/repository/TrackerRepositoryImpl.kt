@@ -1,12 +1,16 @@
 package com.platzi.android.mvvm.app.data.remote.repository
 
+import com.platzi.android.mvvm.app.data.local.dao.TrackerDao
+import com.platzi.android.mvvm.app.data.local.mapper.toTrackedFoodEntity
 import com.platzi.android.mvvm.app.data.remote.api.OpenFoodApi
 import com.platzi.android.mvvm.app.data.remote.mapper.toTrackableFood
 import com.platzi.android.mvvm.app.domain.tracker.model.TrackableFood
+import com.platzi.android.mvvm.app.domain.tracker.model.TrackedFood
 import com.platzi.android.mvvm.app.domain.tracker.repository.TrackerRepository
 
 class TrackerRepositoryImpl(
-    private val api: OpenFoodApi
+    private val api: OpenFoodApi,
+    private val dao: TrackerDao
 ) : TrackerRepository {
     override suspend fun searchFood(
         query: String,
@@ -41,5 +45,9 @@ class TrackerRepositoryImpl(
             e.printStackTrace()
             Result.failure(e)
         }
+    }
+
+    override suspend fun insertTrackedFood(food: TrackedFood) {
+        dao.insertTrackedFood(food.toTrackedFoodEntity())
     }
 }
