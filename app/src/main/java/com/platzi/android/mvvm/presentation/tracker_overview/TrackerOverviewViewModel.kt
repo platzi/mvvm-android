@@ -14,6 +14,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -37,6 +38,24 @@ class TrackerOverviewViewModel @Inject constructor(
 
     fun onEvent(event: TrackerOverviewEvent) {
         when (event) {
+            is TrackerOverviewEvent.OnDeleteTrackedFoodClick -> {
+                viewModelScope.launch {
+                    trackerUseCases.deleteTrackedFoodUseCase(event.trackedFood)
+                    refreshFoods()
+                }
+            }
+            is TrackerOverviewEvent.OnNextDayClick -> {
+                state = state.copy(
+                    date = state.date.plusDays(1)
+                )
+                refreshFoods()
+            }
+            is TrackerOverviewEvent.OnPreviousDayClick -> {
+                state = state.copy(
+                    date = state.date.minusDays(1)
+                )
+                refreshFoods()
+            }
             is TrackerOverviewEvent.OnToggleMealClick -> {
                 state = state.copy(
                     meals = state.meals.map {

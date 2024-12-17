@@ -41,10 +41,10 @@ fun TrackerOverviewScreen(
             DaySelector(
                 date = state.date,
                 onPreviousDayClick = {
-
+                    trackerOverviewViewModel.onEvent(TrackerOverviewEvent.OnPreviousDayClick)
                 },
                 onNextDayClick = {
-
+                    trackerOverviewViewModel.onEvent(TrackerOverviewEvent.OnNextDayClick)
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -70,7 +70,10 @@ fun TrackerOverviewScreen(
                         foods.forEach { food ->
                             TrackedFoodItem(
                                 trackedFood = food,
-                                onDeleteClick = {}
+                                onDeleteClick = {
+                                    trackerOverviewViewModel
+                                        .onEvent(TrackerOverviewEvent.OnDeleteTrackedFoodClick(food))
+                                }
                             )
                             Spacer(modifier = Modifier.height(spacing.spaceMedium))
                         }
